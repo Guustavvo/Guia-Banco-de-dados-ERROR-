@@ -1,0 +1,63 @@
+# Guia de Solução de Problemas: Conexão ao Banco de Dados SQL com VPN FortiClient
+
+## 1. Verificar Conexão VPN
+
+- **Certifique-se de que a VPN está conectada corretamente:**
+  - Abra o FortiClient.
+  - Verifique se o status da conexão está como "Conectado".
+  - Certifique-se de que a conexão é com o túnel VPN correto.
+
+## 2. Verificar Configuração de DNS
+
+- **Configuração de DNS Manual:**
+  - Abra as configurações de rede do seu sistema.
+  - Encontre a interface de rede relacionada à VPN (pode estar listada como "Fortinet SSL VPN" ou algo similar).
+  - Verifique se o DNS está configurado corretamente, preferencialmente com o DNS corporativo ou outro DNS recomendado pela equipe de TI.
+
+- **Limpeza de Cache DNS:**
+  - No **Windows**, abra o Prompt de Comando como administrador e execute o comando:
+    ```
+    ipconfig /flushdns
+    ```
+  - No **macOS**, abra o Terminal e execute o comando:
+    ```
+    sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+    ```
+  - No **Linux**, dependendo da distribuição, você pode precisar usar:
+    ```
+    sudo systemd-resolve --flush-caches
+    ```
+  - Após executar o comando, tente conectar ao banco de dados novamente.
+
+## 3. Verificar Configuração de Arquivo de Hosts
+
+- **Adicionar ou Verificar Entrada no Arquivo de Hosts:**
+  - Abra o arquivo de hosts do seu sistema:
+    - **Windows:** `C:\Windows\System32\drivers\etc\hosts`
+    - **macOS/Linux:** `/etc/hosts`
+  - Adicione uma entrada para o servidor SQL com o formato:
+    ```
+    [IP do Servidor SQL] maxyall-sql-server-read.eduzz.cloud
+    ```
+  - **Nota:** Você precisará da permissão de administrador para editar este arquivo.
+
+## 4. Testar Conectividade
+
+- **Testar Ping para o Servidor SQL:**
+  - Abra o Prompt de Comando ou Terminal.
+  - Execute o comando:
+    ```
+    ping maxyall-sql-server-read.eduzz.cloud
+    ```
+  - Se o ping for bem-sucedido, a resolução de nome está funcionando. Caso contrário, pode haver um problema com a resolução de nomes DNS ou com a configuração de rede.
+
+## 5. Verificar Configuração do Cliente SQL
+
+- **Certifique-se de que as configurações do cliente SQL estão corretas:**
+  - Verifique o nome do servidor, porta, e credenciais de login.
+  - Garanta que o protocolo de comunicação (por exemplo, TCP/IP) esteja habilitado.
+
+## 6. Contatar o Suporte de TI
+
+- **Caso o problema persista:**
+  - Entre em contato com a equipe de suporte de TI da sua organização para assistência adicional. Forneça detalhes sobre as etapas que você já tentou e qualquer mensagem de erro específica que você recebeu.
